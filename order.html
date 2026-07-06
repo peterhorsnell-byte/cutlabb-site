@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Order — CutLab Stickers</title>
+<meta name="description" content="Request a custom cut vinyl sticker or decal. Upload your idea, logo or sketch and we'll confirm whether it can be cut.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CutLab Stickers — Futuristic cut-vinyl brand
+   Palette: black / white / silver / chrome / neon accents
+   ============================================================ */
+
+:root{
+  --bg:#07080b;
+  --bg-2:#0c0e14;
+  --panel:#11141d;
+  --panel-2:#151926;
+  --line:rgba(255,255,255,.08);
+  --line-2:rgba(255,255,255,.14);
+  --text:#eef1f7;
+  --muted:#9aa3b5;
+  --muted-2:#6c7488;
+  --chrome:linear-gradient(180deg,#ffffff 0%,#c8ccd6 38%,#8b90a0 60%,#e9ecf3 100%);
+  --neon:#38f5d4;      /* teal-cyan */
+  --neon-2:#8b5cff;    /* violet */
+  --neon-3:#ff4fa3;    /* pink */
+  --glow-neon:0 0 24px rgba(56,245,212,.45);
+  --radius:20px;
+  --radius-lg:28px;
+  --maxw:1180px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --display:'Space Grotesk','Inter',sans-serif;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ambient background glow */
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background:
+    radial-gradient(700px 500px at 12% -5%, rgba(139,92,255,.14), transparent 60%),
+    radial-gradient(680px 520px at 92% 8%, rgba(56,245,212,.12), transparent 60%),
+    radial-gradient(900px 700px at 50% 120%, rgba(255,79,163,.08), transparent 60%);
+  z-index:-2;pointer-events:none;
+}
+/* subtle grid */
+body::after{
+  content:"";
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:54px 54px;
+  mask-image:radial-gradient(circle at 50% 30%,black,transparent 78%);
+  z-index:-1;pointer-events:none;
+}
+
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+.container{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+/* ---------- Typography ---------- */
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.08;letter-spacing:-.02em;margin:0}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--neon);font-weight:600;
+  padding:7px 14px;border:1px solid var(--line-2);border-radius:100px;
+  background:rgba(56,245,212,.06);
+}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:var(--glow-neon)}
+.chrome-text{
+  background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 8px rgba(255,255,255,.15));
+}
+.neon-text{color:var(--neon)}
+.section-lead{color:var(--muted);max-width:640px;margin:14px auto 0;font-size:17px}
+.center{text-align:center}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--display);font-weight:600;font-size:15px;
+  padding:14px 26px;border-radius:100px;border:1px solid transparent;
+  cursor:pointer;transition:transform .18s ease,box-shadow .25s ease,background .25s ease;
+  white-space:nowrap;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{
+  color:#04120e;
+  background:linear-gradient(180deg,#5dfbe0,#22c9ac);
+  box-shadow:0 8px 30px rgba(56,245,212,.35),inset 0 1px 0 rgba(255,255,255,.6);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(56,245,212,.5)}
+.btn-ghost{
+  color:var(--text);background:rgba(255,255,255,.03);border-color:var(--line-2);
+  backdrop-filter:blur(6px);
+}
+.btn-ghost:hover{border-color:var(--neon);color:#fff;box-shadow:0 0 0 1px rgba(56,245,212,.4)}
+.btn-lg{padding:17px 34px;font-size:16px}
+
+/* ---------- Nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(14px);
+  background:rgba(7,8,11,.72);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:70px}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.02em}
+.brand .logo-mark{
+  width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(145deg,#1b2030,#0b0d14);
+  border:1px solid var(--line-2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 0 18px rgba(56,245,212,.25);
+}
+.brand .logo-mark span{
+  font-size:19px;line-height:1;
+  background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.brand small{display:block;font-family:var(--font);font-weight:500;font-size:10px;letter-spacing:.24em;color:var(--muted-2);text-transform:uppercase}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{color:var(--muted);font-size:14.5px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.nav-toggle{display:none;background:none;border:1px solid var(--line-2);border-radius:10px;color:#fff;width:42px;height:42px;font-size:20px;cursor:pointer}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;padding:96px 0 84px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(40px,6vw,72px);margin:20px 0 0}
+.hero p.sub{color:var(--muted);font-size:19px;margin:22px 0 0;max-width:560px}
+.hero-actions{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:34px;margin-top:44px;flex-wrap:wrap}
+.hero-stats .stat span{display:block;font-family:var(--display);font-size:28px;font-weight:700}
+.hero-stats .stat small{color:var(--muted-2);font-size:13px;letter-spacing:.04em}
+
+/* hero visual */
+.hero-visual{position:relative;height:460px}
+.hv-card{
+  position:absolute;border-radius:var(--radius);
+  border:1px solid var(--line-2);
+  background:linear-gradient(160deg,var(--panel-2),var(--panel));
+  box-shadow:0 30px 80px rgba(0,0,0,.55);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:18px;overflow:hidden;
+}
+.hv-card .tag{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2)}
+.hv-card .decal{font-family:var(--display);font-weight:700;letter-spacing:-.02em}
+.hv-1{width:250px;height:250px;left:0;top:20px;transform:rotate(-6deg);animation:float1 7s ease-in-out infinite}
+.hv-2{width:230px;height:180px;right:0;top:0;transform:rotate(5deg);animation:float2 8s ease-in-out infinite}
+.hv-3{width:280px;height:170px;right:10px;bottom:6px;transform:rotate(-3deg);animation:float1 9s ease-in-out infinite}
+.hv-1 .decal{font-size:44px;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hv-2 .decal{font-size:30px;color:var(--neon);text-shadow:var(--glow-neon)}
+.hv-3 .decal{font-size:26px;color:var(--neon-3);text-shadow:0 0 22px rgba(255,79,163,.5)}
+.hv-badge{position:absolute;left:44%;top:44%;transform:translate(-50%,-50%) rotate(-8deg);
+  width:120px;height:120px;border-radius:50%;display:grid;place-items:center;text-align:center;
+  background:radial-gradient(circle at 30% 25%,#1a1f30,#0a0c12);
+  border:1px solid var(--line-2);box-shadow:0 0 40px rgba(139,92,255,.4);
+  font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.14em;color:var(--neon-2);z-index:3}
+@keyframes float1{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(-6deg)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(5deg)}50%{transform:translateY(12px) rotate(5deg)}}
+
+/* marquee */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg-2);overflow:hidden;padding:16px 0}
+.marquee-track{display:flex;gap:48px;white-space:nowrap;animation:scroll 26s linear infinite;font-family:var(--display);font-weight:600;color:var(--muted);letter-spacing:.06em}
+.marquee-track span{opacity:.7}
+.marquee-track span b{color:var(--neon);font-weight:600}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- Sections ---------- */
+section{padding:88px 0;position:relative}
+.section-head{margin-bottom:48px}
+.section-head h2{font-size:clamp(30px,4vw,46px)}
+
+/* card grid */
+.grid{display:grid;gap:20px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+
+.card{
+  background:linear-gradient(160deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px;transition:transform .2s ease,border-color .2s ease,box-shadow .3s ease;
+  position:relative;overflow:hidden;
+}
+.card:hover{transform:translateY(-4px);border-color:var(--line-2);box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.card .ic{
+  width:48px;height:48px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;font-size:22px;
+  background:rgba(56,245,212,.08);border:1px solid rgba(56,245,212,.2);
+}
+.card h3{font-size:20px;margin-bottom:8px}
+.card p{color:var(--muted);font-size:15px;margin:0}
+.card .from{margin-top:14px;font-family:var(--display);font-weight:600;color:var(--neon)}
+
+/* category card w/ preview */
+.cat-card .preview{
+  height:120px;border-radius:14px;margin-bottom:16px;display:grid;place-items:center;
+  background:radial-gradient(circle at 30% 20%,#1a2030,#0a0c12);
+  border:1px solid var(--line);font-family:var(--display);font-weight:700;
+}
+
+/* how it works */
+.steps{counter-reset:step;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step{position:relative;padding-top:20px}
+.step .num{
+  font-family:var(--display);font-size:52px;font-weight:700;line-height:1;
+  background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.9;
+}
+.step h3{font-size:19px;margin:12px 0 8px}
+.step p{color:var(--muted);font-size:15px;margin:0}
+.step::after{content:"";position:absolute;top:34px;right:-10px;width:20px;height:2px;background:var(--line-2)}
+.step:last-child::after{display:none}
+
+/* limitations split */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.limit-box{border-radius:var(--radius);padding:28px;border:1px solid var(--line)}
+.limit-good{background:linear-gradient(160deg,rgba(56,245,212,.07),rgba(56,245,212,.02));border-color:rgba(56,245,212,.25)}
+.limit-bad{background:linear-gradient(160deg,rgba(255,79,163,.06),rgba(255,79,163,.02));border-color:rgba(255,79,163,.22)}
+.limit-box h3{display:flex;align-items:center;gap:10px;font-size:20px;margin-bottom:16px}
+.limit-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px}
+.limit-list li{display:flex;gap:11px;align-items:flex-start;color:var(--muted);font-size:15px}
+.limit-list li .m{flex:none;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:13px;margin-top:1px}
+.limit-good .m{background:rgba(56,245,212,.15);color:var(--neon)}
+.limit-bad .m{background:rgba(255,79,163,.15);color:var(--neon-3)}
+
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.g-item{
+  aspect-ratio:1;border-radius:16px;overflow:hidden;position:relative;
+  border:1px solid var(--line);
+  background:radial-gradient(circle at 30% 25%,#161b29,#090b11);
+  display:flex;align-items:flex-end;padding:16px;transition:transform .2s,border-color .2s;
+}
+.g-item:hover{transform:translateY(-3px);border-color:var(--neon)}
+.g-item .g-label{font-size:13px;color:var(--text);font-weight:500;z-index:2}
+.g-item .g-art{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:700;opacity:.9}
+.g-item .g-art.chrome{font-size:34px;background:var(--chrome);-webkit-background-clip:text;background-clip:text;color:transparent}
+.g-item .g-art.teal{font-size:30px;color:var(--neon);text-shadow:var(--glow-neon)}
+.g-item .g-art.pink{font-size:30px;color:var(--neon-3);text-shadow:0 0 20px rgba(255,79,163,.5)}
+.g-item .g-art.violet{font-size:30px;color:var(--neon-2);text-shadow:0 0 20px rgba(139,92,255,.5)}
+.g-item::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.6))}
+.g-item .g-label{position:relative}
+
+/* pricing */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.price-card{
+  background:linear-gradient(160deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);border-radius:var(--radius-lg);padding:30px;position:relative;overflow:hidden;
+}
+.price-card.featured{border-color:rgba(56,245,212,.4);box-shadow:0 0 50px rgba(56,245,212,.12)}
+.price-card.featured::before{content:"POPULAR";position:absolute;top:18px;right:-34px;transform:rotate(45deg);background:var(--neon);color:#04120e;font-size:11px;font-weight:700;letter-spacing:.14em;padding:5px 44px;font-family:var(--display)}
+.price-card h3{font-size:20px;margin-bottom:6px}
+.price-card .price{font-family:var(--display);font-size:40px;font-weight:700;margin:14px 0}
+.price-card .price small{font-size:15px;color:var(--muted);font-weight:400}
+.price-card ul{list-style:none;padding:0;margin:18px 0 24px;display:flex;flex-direction:column;gap:10px}
+.price-card ul li{color:var(--muted);font-size:14.5px;display:flex;gap:10px}
+.price-card ul li::before{content:"›";color:var(--neon);font-weight:700}
+.price-note{margin-top:22px;color:var(--muted-2);font-size:13.5px;text-align:center}
+
+/* CTA band */
+.cta-band{
+  border-radius:var(--radius-lg);padding:56px;text-align:center;position:relative;overflow:hidden;
+  background:
+    radial-gradient(600px 300px at 20% 0%,rgba(139,92,255,.22),transparent 60%),
+    radial-gradient(600px 300px at 80% 100%,rgba(56,245,212,.2),transparent 60%),
+    linear-gradient(160deg,#12151f,#0a0c12);
+  border:1px solid var(--line-2);
+}
+.cta-band h2{font-size:clamp(30px,4.4vw,48px)}
+.cta-band p{color:var(--muted);max-width:560px;margin:16px auto 30px;font-size:17px}
+
+/* ---------- Form / Order page ---------- */
+.order-hero{padding:64px 0 20px}
+.form-shell{
+  background:linear-gradient(160deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:40px;margin-top:34px;
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{font-size:14px;font-weight:600;font-family:var(--display);letter-spacing:.01em}
+.field label .req{color:var(--neon-3)}
+.field .hint{font-size:12.5px;color:var(--muted-2);font-weight:400}
+.field input,.field select,.field textarea{
+  background:#0a0c12;border:1px solid var(--line-2);border-radius:12px;
+  padding:13px 15px;color:var(--text);font-family:var(--font);font-size:15px;transition:border-color .2s,box-shadow .2s;
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted-2)}
+.field input:focus,.field select:focus,.field textarea:focus{
+  outline:none;border-color:var(--neon);box-shadow:0 0 0 3px rgba(56,245,212,.15)
+}
+.field textarea{resize:vertical;min-height:110px}
+.upload{
+  border:1.5px dashed var(--line-2);border-radius:14px;padding:26px;text-align:center;cursor:pointer;transition:.2s;
+  background:#0a0c12;
+}
+.upload:hover{border-color:var(--neon);background:rgba(56,245,212,.03)}
+.upload .u-ic{font-size:30px;margin-bottom:8px}
+.upload p{margin:0;color:var(--muted)}
+.upload small{color:var(--muted-2)}
+.upload input{display:none}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  padding:9px 15px;border-radius:100px;border:1px solid var(--line-2);background:#0a0c12;
+  font-size:13.5px;color:var(--muted);cursor:pointer;user-select:none;transition:.18s;font-weight:500;
+}
+.chip:hover{border-color:var(--line-2);color:#fff}
+.chip.active{background:rgba(56,245,212,.12);border-color:var(--neon);color:var(--neon)}
+.form-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:30px;flex-wrap:wrap}
+.form-foot p{color:var(--muted-2);font-size:13px;margin:0;max-width:520px}
+.form-msg{margin-top:18px;padding:16px 18px;border-radius:12px;border:1px solid rgba(56,245,212,.3);background:rgba(56,245,212,.08);color:var(--neon);display:none}
+.form-msg.show{display:block}
+
+/* order type toggle */
+.order-switch{display:inline-flex;background:#0a0c12;border:1px solid var(--line-2);border-radius:100px;padding:5px;gap:5px;margin-top:24px}
+.order-switch button{
+  border:none;background:none;color:var(--muted);font-family:var(--display);font-weight:600;font-size:14px;
+  padding:10px 22px;border-radius:100px;cursor:pointer;transition:.2s;
+}
+.order-switch button.active{background:linear-gradient(180deg,#5dfbe0,#22c9ac);color:#04120e}
+
+/* quick builder */
+.builder{display:none}
+.builder.show{display:block}
+.custom-form.hide{display:none}
+.builder-summary{
+  margin-top:22px;background:#0a0c12;border:1px solid var(--line-2);border-radius:14px;padding:20px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.builder-summary .est{font-family:var(--display);font-size:26px;font-weight:700;color:var(--neon)}
+
+/* ---------- Footer ---------- */
+footer{border-top:1px solid var(--line);background:var(--bg-2);padding:56px 0 30px;margin-top:20px}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:30px}
+.foot-grid h4{font-size:14px;letter-spacing:.06em;margin-bottom:16px;color:#fff}
+.foot-links{display:flex;flex-direction:column;gap:10px}
+.foot-links a{color:var(--muted);font-size:14px}
+.foot-links a:hover{color:var(--neon)}
+.foot-bottom{border-top:1px solid var(--line);margin-top:36px;padding-top:22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted-2);font-size:13px}
+.foot-desc{color:var(--muted);font-size:14.5px;max-width:300px;margin-top:14px}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- Responsive ---------- */
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .hero-visual{height:380px;order:-1}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .step::after{display:none}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .price-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav-links,.nav-cta .btn-ghost{display:none}
+  .nav-toggle{display:grid;place-items:center}
+  .nav.open .nav-links{
+    display:flex;flex-direction:column;position:absolute;top:70px;left:0;right:0;
+    background:rgba(7,8,11,.98);border-bottom:1px solid var(--line);padding:20px 22px;gap:18px;
+  }
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .form-shell{padding:24px}
+  .cta-band{padding:36px 22px}
+  section{padding:64px 0}
+  .hero{padding:60px 0 50px}
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <span class="logo-mark"><span>◆</span></span>
+      <span>CutLab<small>Cut Vinyl Studio</small></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#categories">Categories</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#pricing">Pricing</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="index.html">← Back home</a>
+      <a class="btn btn-primary" href="#order-form">Start</a>
+      <button class="nav-toggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ORDER HERO -->
+<section class="order-hero">
+  <div class="container">
+    <div class="reveal" style="max-width:720px">
+      <span class="eyebrow">Custom order · Made to your idea</span>
+      <h1 style="font-size:clamp(34px,5vw,56px);margin-top:18px">Tell us what to <span class="chrome-text">cut</span>.</h1>
+      <p class="sub" style="color:var(--muted);font-size:18px;margin-top:16px">Upload an image, logo, sketch or reference photo and we'll confirm whether it can be turned into a clean cut vinyl sticker or layered decal. No obligation — just send it through and we'll come back with sizing, colours and pricing.</p>
+      <div class="order-switch">
+        <button data-mode="custom" class="active">Custom quote request</button>
+        <button data-mode="builder">Quick sticker builder</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMS -->
+<section id="order-form" style="padding-top:20px">
+  <div class="container">
+
+    <!-- CUSTOM QUOTE FORM -->
+    <form class="custom-form" data-draft>
+      <div class="form-shell reveal">
+        <div class="section-head" style="margin-bottom:26px">
+          <h2 style="font-size:26px">Custom sticker / decal request</h2>
+          <p style="color:var(--muted);margin-top:8px">Fields marked <span style="color:var(--neon-3)">*</span> help us quote faster. The more detail you give, the sharper our first reply.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>Name <span class="req">*</span></label>
+            <input type="text" name="name" placeholder="Your name" required>
+          </div>
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" name="email" placeholder="you@email.com" required>
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="Optional — for quick questions">
+          </div>
+          <div class="field">
+            <label>Type of sticker / decal <span class="req">*</span></label>
+            <select name="type" required>
+              <option value="" disabled selected>Choose a style…</option>
+              <option>Custom name sticker</option>
+              <option>Business logo decal</option>
+              <option>Car / vehicle decal</option>
+              <option>Window decal</option>
+              <option>Laptop / bottle sticker</option>
+              <option>Wall decal</option>
+              <option>Event / party sticker</option>
+              <option>Label / organising sticker</option>
+              <option>Custom silhouette</option>
+              <option>Layered vinyl design</option>
+              <option>Not sure — need advice</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Approximate size</label>
+            <input type="text" name="size" placeholder="e.g. 15cm wide, or fits a laptop lid">
+            <span class="hint">Rough is fine — we'll confirm exact sizing.</span>
+          </div>
+          <div class="field">
+            <label>Quantity</label>
+            <input type="number" name="quantity" min="1" value="1">
+          </div>
+
+          <div class="field full">
+            <label>Where will it be used?</label>
+            <input type="hidden" name="surfaces">
+            <div class="chips">
+              <span class="chip" data-value="Car">Car</span>
+              <span class="chip" data-value="Window">Window</span>
+              <span class="chip" data-value="Wall">Wall</span>
+              <span class="chip" data-value="Laptop">Laptop</span>
+              <span class="chip" data-value="Bottle">Bottle</span>
+              <span class="chip" data-value="Sign">Sign</span>
+              <span class="chip" data-value="Trailer">Trailer</span>
+              <span class="chip" data-value="Shopfront">Shopfront</span>
+              <span class="chip" data-value="Other">Other</span>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Preferred colours</label>
+            <input type="hidden" name="colours">
+            <div class="chips">
+              <span class="chip" data-value="Black">Black</span>
+              <span class="chip" data-value="White">White</span>
+              <span class="chip" data-value="Silver / Chrome">Silver / Chrome</span>
+              <span class="chip" data-value="Gold">Gold</span>
+              <span class="chip" data-value="Red">Red</span>
+              <span class="chip" data-value="Blue">Blue</span>
+              <span class="chip" data-value="Green">Green</span>
+              <span class="chip" data-value="Pink">Pink</span>
+              <span class="chip" data-value="Custom / not sure">Custom / not sure</span>
+            </div>
+            <span class="hint">Pick as many as you like — layered designs use multiple colours.</span>
+          </div>
+
+          <div class="field full">
+            <label>Upload image, logo, sketch or reference</label>
+            <label class="upload" id="file-label" for="file">
+              <div class="u-ic">⬆️</div>
+              <p>Click to upload or drop a file</p>
+              <small>PNG, JPG, SVG, PDF — a photo of a sketch works too</small>
+            </label>
+            <input id="file" type="file" name="reference" accept="image/*,.pdf,.svg" multiple>
+            <span class="hint">We'll confirm whether your image can be turned into a cut vinyl sticker or layered decal before any work begins.</span>
+          </div>
+
+          <div class="field full">
+            <label>Notes or special instructions</label>
+            <textarea name="notes" placeholder="Deadlines, exact wording, font ideas, how you'll apply it, anything else we should know…"></textarea>
+          </div>
+        </div>
+
+        <div class="form-foot">
+          <p>By sending this you're just starting a conversation — no payment yet. We'll review your idea and reply with feasibility, sizing, colours and pricing.</p>
+          <button type="submit" class="btn btn-primary btn-lg">Send my request →</button>
+        </div>
+
+        <div class="form-msg">✅ Thanks — your request has been captured (draft demo). In the live site this sends straight to the studio, and we'd reply within one business day to confirm whether it can be cut, plus sizing and pricing.</div>
+      </div>
+    </form>
+
+    <!-- QUICK BUILDER -->
+    <form class="builder" data-draft>
+      <div class="form-shell reveal">
+        <div class="section-head" style="margin-bottom:26px">
+          <h2 style="font-size:26px">Quick sticker builder</h2>
+          <p style="color:var(--muted);margin-top:8px">Pick a basic type, size, colours and quantity for a fast indicative estimate. This is a draft flow — full online checkout can be added later.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>Sticker type</label>
+            <select name="b-type">
+              <option>Custom name sticker</option>
+              <option>Business logo decal</option>
+              <option>Silhouette / icon</option>
+              <option>Label set</option>
+              <option>Window / wall decal</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Size</label>
+            <select id="b-size" name="b-size">
+              <option value="small">Small — up to 10cm</option>
+              <option value="medium" selected>Medium — 10–30cm</option>
+              <option value="large">Large — 30cm+</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Colour layers</label>
+            <select id="b-layers" name="b-layers">
+              <option value="1">1 colour</option>
+              <option value="2">2 colours (layered)</option>
+              <option value="3">3 colours (layered)</option>
+              <option value="4">4+ colours (layered)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Quantity</label>
+            <input id="b-qty" type="number" name="b-qty" min="1" value="1">
+          </div>
+          <div class="field full">
+            <label>Contact email <span class="req">*</span></label>
+            <input type="email" name="b-email" placeholder="you@email.com" required>
+          </div>
+        </div>
+
+        <div class="builder-summary">
+          <div>
+            <div style="font-family:var(--display);font-weight:600">Indicative estimate</div>
+            <small style="color:var(--muted-2)">Guide only — final price confirmed after design review.</small>
+          </div>
+          <div class="est" id="b-estimate">$0</div>
+        </div>
+
+        <div class="form-foot">
+          <p>Indicative pricing uses placeholder rates and is ready to be updated with your real numbers. Large and vehicle jobs are always quoted individually.</p>
+          <button type="submit" class="btn btn-primary btn-lg">Request this order →</button>
+        </div>
+
+        <div class="form-msg">✅ Got it — your quick order request has been captured (draft demo). Live, this would confirm your estimate and next steps by email.</div>
+      </div>
+    </form>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html">
+          <span class="logo-mark"><span>◆</span></span>
+          <span>CutLab<small>Cut Vinyl Studio</small></span>
+        </a>
+        <p class="foot-desc">Precision cut vinyl stickers and decals, made to order. Bold, clean, and built to stick.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <div class="foot-links">
+          <a href="index.html#categories">Categories</a>
+          <a href="index.html#how">How it works</a>
+          <a href="index.html#gallery">Gallery</a>
+          <a href="index.html#pricing">Pricing</a>
+        </div>
+      </div>
+      <div>
+        <h4>Order</h4>
+        <div class="foot-links">
+          <a href="order.html">Custom order</a>
+          <a href="index.html#limits">Design guide</a>
+          <a href="index.html#materials">Materials</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <div class="foot-links">
+          <a href="mailto:hello@cutlab.example">hello@cutlab.example</a>
+          <a href="tel:+61000000000">+61 000 000 000</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year">2026</span> CutLab Stickers. Draft concept — name & details are placeholders.</span>
+      <span>Custom cut vinyl · Made to order</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* CutLab Stickers — interactions (vanilla JS, no dependencies) */
+
+/* Mobile nav toggle */
+(function () {
+  var nav = document.querySelector('.nav');
+  var toggle = document.querySelector('.nav-toggle');
+  if (toggle && nav) {
+    toggle.addEventListener('click', function () {
+      nav.classList.toggle('open');
+    });
+    nav.querySelectorAll('.nav-links a').forEach(function (a) {
+      a.addEventListener('click', function () { nav.classList.remove('open'); });
+    });
+  }
+})();
+
+/* Scroll reveal */
+(function () {
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || !els.length) {
+    els.forEach(function (e) { e.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function (e) { io.observe(e); });
+})();
+
+/* Chip multi-select (surfaces / colours) */
+(function () {
+  document.querySelectorAll('.chips').forEach(function (group) {
+    var hidden = group.parentElement.querySelector('input[type="hidden"]');
+    group.querySelectorAll('.chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chip.classList.toggle('active');
+        if (hidden) {
+          var picked = Array.from(group.querySelectorAll('.chip.active')).map(function (c) { return c.dataset.value || c.textContent.trim(); });
+          hidden.value = picked.join(', ');
+        }
+      });
+    });
+  });
+})();
+
+/* Upload filename display */
+(function () {
+  var input = document.getElementById('file');
+  var label = document.getElementById('file-label');
+  if (input && label) {
+    input.addEventListener('change', function () {
+      if (input.files && input.files.length) {
+        label.innerHTML = '<div class="u-ic">✅</div><p>' + input.files.length + ' file(s) attached</p><small>' + Array.from(input.files).map(function (f) { return f.name; }).join(', ') + '</small>';
+      }
+    });
+  }
+})();
+
+/* Order type switch: custom quote vs quick builder */
+(function () {
+  var buttons = document.querySelectorAll('.order-switch button');
+  var custom = document.querySelector('.custom-form');
+  var builder = document.querySelector('.builder');
+  if (!buttons.length) return;
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      buttons.forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      var mode = b.dataset.mode;
+      if (mode === 'builder') {
+        builder && builder.classList.add('show');
+        custom && custom.classList.add('hide');
+      } else {
+        builder && builder.classList.remove('show');
+        custom && custom.classList.remove('hide');
+      }
+    });
+  });
+})();
+
+/* Quick builder live estimate (indicative only) */
+(function () {
+  var form = document.querySelector('.builder');
+  if (!form) return;
+  var sizeEl = document.getElementById('b-size');
+  var layersEl = document.getElementById('b-layers');
+  var qtyEl = document.getElementById('b-qty');
+  var out = document.getElementById('b-estimate');
+  if (!out) return;
+
+  var base = { small: 6, medium: 14, large: 32 };
+  function calc() {
+    var b = base[sizeEl.value] || 6;
+    var layers = parseInt(layersEl.value, 10) || 1;
+    var qty = parseInt(qtyEl.value, 10) || 1;
+    var unit = b + (layers - 1) * 3;
+    // simple bulk taper
+    var mult = qty >= 50 ? 0.7 : qty >= 20 ? 0.8 : qty >= 10 ? 0.9 : 1;
+    var total = Math.round(unit * qty * mult);
+    out.textContent = '$' + total + ' (indic.)';
+  }
+  [sizeEl, layersEl, qtyEl].forEach(function (el) { el && el.addEventListener('input', calc); el && el.addEventListener('change', calc); });
+  calc();
+})();
+
+/* Form submit (draft — no backend, shows confirmation) */
+(function () {
+  document.querySelectorAll('form[data-draft]').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = form.querySelector('.form-msg');
+      if (msg) {
+        msg.classList.add('show');
+        msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      form.reset();
+      form.querySelectorAll('.chip.active').forEach(function (c) { c.classList.remove('active'); });
+    });
+  });
+})();
+
+/* Footer year */
+(function () {
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+})();
+
+</script>
+</body>
+</html>
